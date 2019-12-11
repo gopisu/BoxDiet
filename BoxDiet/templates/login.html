@@ -1,0 +1,23 @@
+{% extends "BoxDiet/__base__.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-content border-dashed p-3 m-4">
+<h2> Zaloguj się </h2> <br>
+<form method="POST"> {% csrf_token %}
+    <label>Login:
+        <input type="text" name='login'>
+    </label><br>
+    <label>Password:
+        <input type="password" name='password'>
+    </label><br>
+    <input class="btn btn-success" type="submit" value="Zaloguj się"><br><br>
+    <h3>lub</h3><br>
+    <a href="{% url 'create_user' %}" class="btn btn-success">Dodaj użytkownika</a>
+    ​<input type="hidden" name="next" value="{{ next }}"/>
+</form>
+</div>
+
+{% endblock content %}

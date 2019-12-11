@@ -1,0 +1,88 @@
+{% extends "BoxDiet/__base__.html" %}
+{% block title %}DODAJ PRZEPIS DO PLANU{% endblock %}
+{% block content %}
+
+
+
+    <form class="dashboard-content border-dashed p-3 m-4 view-height" method="post"
+          action="{% url 'plan_add_recipe' %}">
+        <div class="row border-bottom border-3 p-1 m-1">
+            <div class="col noPadding">
+                <h3 class="color-header text-uppercase">DODAJ PRZEPIS DO PLANU</h3>
+            </div>
+            <div class="col d-flex justify-content-end mb-2 noPadding">
+                <button type="submit"
+                        class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">
+                    Zapisz
+                </button>
+            </div>
+        </div>
+
+        <div class="schedules-content">
+
+            <div class="form-group row">
+                <label for="choosePlan"
+                       class="col-sm-2 label-size col-form-label">
+                    Wybierz plan
+                </label>
+                <div class="col-sm-3">
+                    <select name="plan_id" class="form-control" id="choosePlan">
+                        {% for plan in plan_list %}
+                            {% if plan.pk == plan_id_def %}
+                                <option value={{ plan.pk }} selected="selected">{{ plan.name }}</option>
+                            {% else %}
+                                <option value={{ plan.pk }}>{{ plan.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 label-size col-form-label">
+                    Nazwa posiłku
+                </label>
+                <div class="col-sm-3">
+                    <select name="meal_no" class="form-control">
+                        {% for key, values in meals.items %}
+                            <option value={{ key }}> {{ values }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="recipe" class="col-sm-2 label-size col-form-label">
+                Przepis
+            </label>
+            <div class="col-sm-4">
+                <select name="recipe_id" class="form-control" id="choosePlan">
+                    {% for recipe in recipe_list %}
+                        {% if recipe.id == recipe_id_def %}
+                            <option value={{ recipe.id }} selected="selected">{{ recipe.name }}</option>
+                        {% else %}
+                            <option value={{ recipe.id }}>{{ recipe.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="day" class="col-sm-2 label-size col-form-label">
+                Dzień
+            </label>
+            <div class="col-sm-2">
+                <select name="day_name" class="form-control" id="choosePlan">
+                    {% for day in day_list %}
+                        <option value={{ day.id }}>{{ day.get_day_name_display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    {% csrf_token %}
+    </form>
+    </div>
+
+
+
+
+{% endblock content %}

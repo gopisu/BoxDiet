@@ -1,0 +1,99 @@
+{% extends "BoxDiet/__base__.html" %}
+{% block title %}{% endblock title %}
+{% block content %}
+    <div class="dashboard-content border-dashed p-3 m-4 view-height">
+
+        <div class="row border-bottom border-3 p-1 m-1">
+            <div class="col noPadding">
+                <h3 class="color-header text-uppercase">Posiłek</h3>
+            </div>
+
+            <div class="d-flex justify-content-end mb-2 pl-1">
+                <a href="{% url 'dashboard' %}" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj ocenę</a>
+            </div>
+            <div class="d-flex justify-content-end mb-2 pl-1">
+                <a href="{% url 'dashboard' %}" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4">Usuń ocenę</a>
+            </div>
+            <div class="d-flex justify-content-end mb-2 pl-1">
+                <a href="{% url 'meal_list' %}" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Powrót</a>
+            </div>
+        </div>
+
+        <div class="schedules-content">
+            <div class="schedules-content-header">
+                <div class="form-group row">
+                                <span class="col-sm-2 label-size col-form-label">
+                                    Id
+                                </span>
+                    <div class="col-sm-10">
+                        <p class="schedules-text">{{ object.meal_id }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                                <span class="col-sm-2 label-size col-form-label">
+                                    Nazwa
+                                </span>
+                    <div class="col-sm-10">
+                        <p class="schedules-text">
+                            {{ object.name }}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                                <span class="col-sm-2 label-size col-form-label">
+                                    Oceny
+                                </span>
+                    <div class="col-sm-10">
+                        <p class="schedules-text">
+                            Średnia: {% if meal.avg_of_given_ranks %}
+                            {{ meal.avg_of_given_ranks|floatformat }}
+                        {% else %} Brak ocen {% endif %}
+                        </p>
+                        <p class="schedules-text">
+                            Liczba ocen:
+                            {% if meal.no_of_given_ranks.mark__count %}{{ meal.no_of_given_ranks.mark__count }}
+                            {% else %} Brak ocen {% endif %}
+                        </p>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                                <span class="col-sm-2 label-size col-form-label">
+                                    Makra
+                                </span>
+                    <div class="col-sm-10">
+                        <p class="schedules-text">
+                            Kalorie: {{ object.calories_summary }} kcal
+                        </p>
+                        <p class="schedules-text">
+                            Węglowodany: {{ object.carbohydrates_summary }}
+                        </p>
+                        <p class="schedules-text">
+                            Proteiny: {{ object.protein_summary }}
+                        </p>
+                        <p class="schedules-text">
+                            Tłuszcze: {{ object.fat_summary }}
+                        </p>
+                        <p class="schedules-text">
+                            Błonnik: {{ object.cellulose_summary }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% for rank in object.meals_user.all %}
+                <table class="table">
+                <thead>
+                <tr class="d-flex">
+                    <th class="col-4">Id użytkownika: {{ rank.user_id }}</th>
+                    <th class="col-2">Realna ocena: {{ rank.mark }}</th>
+                    <th class="col-2"></th>
+                </tr>
+                </thead>
+
+            {% endfor %}
+            </table>
+        </div>
+
+
+    </div>
+{% endblock content %}

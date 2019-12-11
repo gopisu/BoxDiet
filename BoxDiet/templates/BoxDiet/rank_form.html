@@ -1,0 +1,86 @@
+{% extends "BoxDiet/__base__.html" %}
+
+{% block title %}{% endblock title %}
+{% block content %}
+    <div class="dashboard-content border-dashed p-3 m-4 view-height">
+
+        <div class="row border-bottom border-3 p-1 m-1">
+            <div class="col noPadding">
+                <h3 class="color-header text-uppercase"> Nowa ocena</h3>
+            </div>
+            <div class="col d-flex justify-content-end mb-2 noPadding">
+                <form method="post">
+                    {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">
+                    Zapisz
+                </button>
+            </div>
+
+
+        </div>
+
+        <div class="schedules-content">
+            <div class="schedules-content-header">
+                <div class="form-group row">
+                    <div class="schedules-content">
+
+                            <div class="form-group row ">
+                                <label for="user"
+                                       class="col-sm-6 label-size col-form-label">
+                                    Wybierz użytkownika
+                                </label>
+                                <div class="col-sm-3 ">
+
+                                    <input list="user" name='user'>
+                                    <datalist id="user">
+                                        {% for user in users %}
+                                            {% if user.pk == user_def %}
+                                                <option value={{ user }} selected="selected">{{ user.pk }}</option>
+                                            {% else %}
+                                                <option value={{ user }}>{{ user.pk }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="meal" class="col-sm-6 label-size col-form-label">
+                                    Wybierz posiłek
+                                </label>
+                                <div class="col-5">
+
+                                    <input list="meal" name="meal">
+                                    <datalist id="meal">
+                                        {% for meal in meals %}
+                                            <option value='{{ meal.meal_id }}'> {{ meal.name }} </option>
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="recipe" class="col-sm-6 label-size col-form-label">
+                                    Ocena:
+                                </label>
+                                <div class="col-sm-4">
+                                    <input list="mark" name="mark">
+                                    <datalist id="mark">
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                    </datalist>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
