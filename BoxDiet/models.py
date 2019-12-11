@@ -11,7 +11,7 @@ class User(models.Model):
         ('\\N', "Brak danych"),
     )
     id = models.AutoField(primary_key=True)
-    sex = models.CharField(max_length=5, choices=SEX)
+    sex = models.CharField(max_length=5, choices=SEX, verbose_name="Płeć")
 
     def avg_of_given_ranks(self):
         # returns None if no rank is related to this instance

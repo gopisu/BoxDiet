@@ -7,12 +7,13 @@
             <div class="col noPadding">
                 <h3 class="color-header text-uppercase">Posiłki</h3>
             </div>
-            <form method="post" action="">{% csrf_token %}
+            <form method="get" action="">
                 <div class="d-flex justify-content-end mb-2 pl-1">
                     <input type="text" class="input rounded-0 pt-0 pb-0 pr-4 pl-4" style='width:12em'
-                           name="searched_name" placeholder="Nazwa posiłku">
-                    <button type="submit" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4" name="search">Szukaj
+                           name="searched_name" placeholder="Id lub część nazwy">
+                    <button type="submit" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4">Szukaj
                     </button>
+
 
                 </div>
             </form>
@@ -71,7 +72,7 @@
                 <ul class="pagination">
                     <li class="page-item">  <!-- Jump to Previous Page -->
                         {% if object_list.has_previous %}
-                            <li class="previous"><a href="?page={{ object_list.previous_page_number }}">
+                            <li class="previous"><a href="?page={{ object_list.previous_page_number }}&?searched_name={{ searched_name }}">
                                 <span aria-hidden="true"> < poprzednia &nbsp;</span></a>
                                 {% else %}
                             <li class="previous disabled"><a> </a>
@@ -79,14 +80,14 @@
                         </li>
                     {% for page in page_range %}
                         {% if page == object_list.number %}
-                            <li class="pg active"><a class="page_number" href="?page={{ page }}">| {{ page }}</a>
+                            <li class="pg active"><a class="page_number" href="?page={{ page }}&searched_name={{ searched_name }}">| {{ page }}</a>
                                 {% else %}
-                            <li class="pg"><a class="page_number" href="?page={{ page }}">| {{ page }}</a>
+                            <li class="pg"><a class="page_number" href="?page={{ page }}&searched_name={{ searched_name }}">| {{ page }}</a>
                         {% endif %}
                     {% endfor %}
                     <li class="page-item">  <!-- Jump to Next Page -->
                         {% if object_list.has_next %}
-                            <li class="previous"><a href="?page={{ object_list.next_page_number }}">&nbsp;następna
+                            <li class="previous"><a href="?page={{ object_list.next_page_number }}&searched_name={{ searched_name }}">&nbsp;następna
                                 ></a>
                             </li>
                         {% else %}

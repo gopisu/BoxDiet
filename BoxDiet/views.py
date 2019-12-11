@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 from django.views import View
@@ -19,38 +19,56 @@ class DashboardView(View):
 
 
 class UsersView(View):
-    def get(self, request):
-        object_list = User.objects.order_by('-id')
-        page_range, user_list = sliced_paginator(request, object_list)
-        return render(request, 'BoxDiet/user_list.html',
-                      {"object_list": user_list, 'page_range': page_range})
 
-    def post(self, request):
-        searched_name = request.POST.get('searched_name')
+    def get(self, request, searched_name=""):
+        searched_name = request.GET.get('searched_name')
+        if not searched_name:
+            object_list = User.objects.order_by('-id')
+            page_range, object_list = sliced_paginator(request, object_list)
+        else:
+            object_list = self.search_user(searched_name)
+            page_range, object_list = sliced_paginator(request, object_list)
+        return render(request, 'BoxDiet/user_list.html',
+                      {"object_list": object_list, 'page_range': page_range, "searched_name": searched_name})
+
+    def search_user(self, searched_name):
         try:
             searched_name = int(searched_name)
             object_list = User.objects.filter(id=searched_name)
         except ValueError:
-            object_list = User.objects.all()
-        page_range, user_list = sliced_paginator(request, object_list)
-        return render(request, 'BoxDiet/user_list.html',
-                      {"object_list": user_list, 'page_range': page_range})
+            lower_gender = searched_name.lower()
+            if lower_gender in 'kobieta':
+                object_list = User.objects.filter(sex__iexact='w')
+            elif lower_gender in 'mężczyzna':
+                object_list = User.objects.filter(sex__iexact='m')
+            else:
+                object_list = User.objects.filter(sex__iexact='\\n')
+        return object_list
 
 
 class MealView(View):
-    def get(self, request):
-        object_list = Meal.objects.order_by('-average_rank').order_by('-no_of_ranks')
-        page_range, meal_list = sliced_paginator(request, object_list)
-        return render(request, 'BoxDiet/meal_list.html',
-                      {"object_list": meal_list, 'page_range': page_range})
 
-    def post(self, request):
-        searched_name = request.POST.get('searched_name')
-        object_list = Meal.objects.filter(name__icontains=searched_name).order_by('-average_rank').order_by(
-            '-no_of_ranks')
-        page_range, meal_list = sliced_paginator(request, object_list)
+    def get(self, request, searched_name=""):
+        searched_name = request.GET.get('searched_name')
+        if not searched_name:
+            object_list = Meal.objects.order_by('-average_rank').order_by('-no_of_ranks')
+            page_range, object_list = sliced_paginator(request, object_list)
+        else:
+            object_list = self.search_meal(searched_name)
+            page_range, object_list = sliced_paginator(request, object_list)
         return render(request, 'BoxDiet/meal_list.html',
-                      {"object_list": meal_list, 'page_range': page_range})
+                      {"object_list": object_list, 'page_range': page_range, "searched_name": searched_name})
+
+    def search_meal(self, searched_name):
+        try:
+            searched_name = int(searched_name)
+            object_list = Meal.objects.filter(meal_id=searched_name).order_by(
+                '-average_rank').order_by('-no_of_ranks')
+        except ValueError:
+            object_list = Meal.objects.filter(name__icontains=searched_name).order_by(
+                '-average_rank').order_by(
+                '-no_of_ranks')
+        return object_list
 
 
 class UserDetailsView(DetailView):
