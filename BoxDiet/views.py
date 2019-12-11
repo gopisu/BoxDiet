@@ -13,7 +13,7 @@ class DashboardView(View):
     def get(self, request):
         meal_no = count(Meal)
         users_no = count(User)
-        top10meals = Meal.objects.order_by('-average_rank').order_by('-no_of_ranks')[:10]
+        top10meals = Meal.objects.filter(average_rank__gt=4.5).order_by('-no_of_ranks')[:10]
 
         return render(request, 'BoxDiet/dashboard.html', {'meal_no': meal_no,
                                                           'users_no': users_no, 'top10meals': top10meals})
@@ -23,7 +23,7 @@ class UsersView(View):
 
     def get(self, request, searched_name=""):
         searched_name = request.GET.get('searched_name')
-        if not searched_name:
+        if searched_name == "" or searched_name is None:
             object_list = User.objects.order_by('-id')
             page_range, object_list = sliced_paginator(request, object_list)
         else:
@@ -51,7 +51,7 @@ class MealView(View):
 
     def get(self, request, searched_name=""):
         searched_name = request.GET.get('searched_name')
-        if not searched_name:
+        if searched_name == "" or searched_name is None:
             object_list = Meal.objects.order_by('-average_rank').order_by('-no_of_ranks')
             page_range, object_list = sliced_paginator(request, object_list)
         else:
@@ -125,6 +125,7 @@ class PopulateWithRanksNo(View):
             meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
             meal.save()
         return HttpResponse('dodano liczbe ocen')
+
 
 class RecommendedList(View):
     def get(self, request, user_id):

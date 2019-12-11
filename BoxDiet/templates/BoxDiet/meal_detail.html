@@ -45,8 +45,8 @@
                                 </span>
                     <div class="col-sm-10">
                         <p class="schedules-text">
-                            Średnia: {% if meal.avg_of_given_ranks %}
-                            {{ meal.avg_of_given_ranks|floatformat }}
+                            Średnia: {% if meal.average_rank %}
+                            {{ meal.average_rank|floatformat }}
                         {% else %} Brak ocen {% endif %}
                         </p>
                         <p class="schedules-text">

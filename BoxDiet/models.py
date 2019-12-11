@@ -49,7 +49,6 @@ class Meal(models.Model):
     def __str__(self):
         return self.name
 
-
     def avg_of_given_ranks(self):
         temp = self.meals_user.aggregate(Avg('mark'))
         if temp['mark__avg'] is None:
@@ -61,7 +60,6 @@ class Meal(models.Model):
         return self.meals_user.aggregate(Count('mark'))
 
 
-
 class Rank(models.Model):
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name="meals_user")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="meals_user")
@@ -70,6 +68,21 @@ class Rank(models.Model):
     class Meta:
         ordering = ["user_id"]
 
+
+class RankManager(models.Manager):
+    def create(self, *args, **kwargs):
+        if kwargs['meal_id']:
+            try:
+                meal_id = int(kwargs['meal_id'])
+                meal = Meal.objects.get(meal_id=meal_id)
+                meal.average_rank = meal.avg_of_given_ranks() + float(meal_id)
+                meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
+                meal.save()
+                return super(RankManager, self).create(*args, **kwargs)
+            except ValueError:
+                return super(RankManager, self).create(*args, **kwargs)
+
+
 class Recommended(models.Model):
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name="recommended")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recommended")
@@ -77,5 +90,3 @@ class Recommended(models.Model):
 
     class Meta:
         ordering = ["user_id"]
-
-
