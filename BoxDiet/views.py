@@ -1,10 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 from django.views import View
 
 from BoxDiet.models import Meal, User, Recommended, Rank
+from BoxDiet.serializers import RecommendedSerializer
 from BoxDiet.utils import count, sliced_paginator, validate_int
 
 
@@ -124,3 +125,9 @@ class PopulateWithRanksNo(View):
             meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
             meal.save()
         return HttpResponse('dodano liczbe ocen')
+
+class RecommendedList(View):
+    def get(self, request, user_id):
+        recommended = Recommended.objects.filter(user__id=user_id)
+        serializer = RecommendedSerializer(recommended, many=True)
+        return JsonResponse(serializer.data, safe=False)
