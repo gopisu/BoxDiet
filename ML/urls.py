@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from BoxDiet.views import DashboardView, UsersView, UserDetailsView, MealView, MealDetailsView, PopulateWithAverage, \
-    PopulateWithRanksNo, UserCreateView, RankCreateView
+    PopulateWithRanksNo, UserCreateView, RankCreateView, RecommendedList
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='test'),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('rank-create/', RankCreateView.as_view(), name='rank_create'),
     path('populate/', PopulateWithAverage.as_view()),
     path('populate-rank-no/', PopulateWithRanksNo.as_view()),
+    path('recommended-for/<int:user_id>', RecommendedList.as_view()),
 ]
