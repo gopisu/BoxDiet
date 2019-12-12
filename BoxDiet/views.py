@@ -8,8 +8,7 @@ from django.views import View
 from django.views import generic
 import turicreate as tc
 
-from BoxDiet.models import Meal, User, Recommended, Rank
-from RestAPI.serializers import RecommendedSerializer
+from BoxDiet.models import Meal, User, Rank, Recommended
 from BoxDiet.utils import count, sliced_paginator
 
 
@@ -82,17 +81,7 @@ class UserDetailsView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailsView, self).get_context_data(**kwargs)
-        user_id = self.kwargs['pk']
-        loaded_model = tc.load_model('my_model_file')
-        items = tc.SFrame.read_csv('BoxDiet/datasets/meals.csv')
-        recs_sf = loaded_model.recommend(users=[user_id]).join(right=items, on={'meal__id': 'meal__id'},
-                                                             how='inner')
-        recs = []
-        for element in recs_sf:
-            rec = []
-            for key in element:
-                rec.append(element.get(key))
-            recs.append(rec)
+        recs = Recommended.objects.filter(user__id=self.kwargs['pk']).order_by('-predicted_mark')
         context['recs'] = recs
         return context
 

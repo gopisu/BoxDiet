@@ -7,7 +7,8 @@ class RecommendedSerializer(serializers.ModelSerializer):
         model = Recommended
         fields = ("user_id", "meal_id", "predicted_mark")
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("user_id", "meal_id", "predicted_mark")
+        fields = ("id", "sex")
