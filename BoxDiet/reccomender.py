@@ -4,6 +4,7 @@
 import turicreate as tc
 
 def prepare_rec():
+
     actions = tc.SFrame.read_csv('BoxDiet/datasets/dump1.csv')
     items = tc.SFrame.read_csv('BoxDiet/datasets/meals.csv')
     users = tc.SFrame.read_csv('BoxDiet/datasets/users.csv')

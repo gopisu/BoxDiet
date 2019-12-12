@@ -15,10 +15,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from BoxDiet.views import DashboardView, UsersView, UserDetailsView, MealView, MealDetailsView, UserCreateView, \
-    RankCreateView, RecommendedList
+from BoxDiet.views import DashboardView, UsersView, UserDetailsView, MealView, MealDetailsView, UserCreateView, RankCreateView, SignUp
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='test'),
@@ -29,5 +28,9 @@ urlpatterns = [
     path('meal-details/<int:pk>', MealDetailsView.as_view(), name='meal_detail'),
     path('user-create/', UserCreateView.as_view(), name='user_create'),
     path('rank-create/', RankCreateView.as_view(), name='rank_create'),
-    path('recommended-for/<int:user_id>', RecommendedList.as_view()),
+    path('API/', include('RestAPI.urls')),
+    path('box/', include('django.contrib.auth.urls')),
+    path('signup/', SignUp.as_view(), name='signup'),
+
+
 ]

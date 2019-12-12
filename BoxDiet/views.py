@@ -1,15 +1,18 @@
-from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 from django.views import View
-
-from BoxDiet.models import Meal, User, Recommended, Rank
-from BoxDiet.serializers import RecommendedSerializer
-from BoxDiet.utils import count, sliced_paginator, validate_int
+from django.views import generic
 
 
-class DashboardView(View):
+
+from BoxDiet.models import Meal, User, Rank, Recommended
+from BoxDiet.utils import count, sliced_paginator
+
+
+class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
         meal_no = count(Meal)
         users_no = count(User)
@@ -20,7 +23,7 @@ class DashboardView(View):
                                                           'worst10meals': worst10meals})
 
 
-class UsersView(View):
+class UsersView(LoginRequiredMixin, View):
 
     def get(self, request, searched_name=""):
         searched_name = request.GET.get('searched_name')
@@ -48,7 +51,7 @@ class UsersView(View):
         return object_list
 
 
-class MealView(View):
+class MealView(LoginRequiredMixin, View):
 
     def get(self, request, searched_name=""):
         searched_name = request.GET.get('searched_name')
@@ -73,7 +76,7 @@ class MealView(View):
         return object_list
 
 
-class UserDetailsView(DetailView):
+class UserDetailsView(LoginRequiredMixin, DetailView):
     model = User
 
     def get_context_data(self, **kwargs):
@@ -83,15 +86,15 @@ class UserDetailsView(DetailView):
         return context
 
 
-class UserCreateView(CreateView):
+class UserCreateView(LoginRequiredMixin, CreateView):
     model = User
     fields = ['sex']
     success_url = reverse_lazy('user_list')
 
 
-class RankCreateView(View):
+class RankCreateView(LoginRequiredMixin, View):
     def get(self, request):
-        selected_meal = 1513
+        User.objects.create(**json)
         users = User.objects.all()
         meals = Meal.objects.all()
         return render(request, "BoxDiet/rank_form.html",
@@ -101,19 +104,21 @@ class RankCreateView(View):
         user_id = request.POST.get('user')
         meal_id = request.POST.get('meal')
         mark = request.POST.get('mark')
-        user_id = validate_int(user_id)
-        meal_id = validate_int(meal_id)
-        rank = Rank.objects.create(user_id=user_id, meal_id=meal_id, mark=mark)
         form = 'BoxDiet/rank_form.html'
+        try:
+            rank = Rank.objects.create(user_id=user_id, meal_id=meal_id, mark=mark)
+        except:
+            message = "Podaj poprawne dane!"
+            return render(request, form, {'message': message})
         return render(request, form, {'message': f'Dodano ocenę {rank.mark} dla dania {rank.meal}'})
 
 
-class MealDetailsView(DetailView):
+class MealDetailsView(LoginRequiredMixin, DetailView):
     model = Meal
 
 
-class RecommendedList(View):
-    def get(self, request, user_id):
-        recommended = Recommended.objects.filter(user__id=user_id)
-        serializer = RecommendedSerializer(recommended, many=True)
-        return JsonResponse(serializer.data, safe=False)
+
+class SignUp(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'signup.html'
