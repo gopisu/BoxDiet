@@ -74,8 +74,8 @@
                 <table class="table">
                 <thead>
                 <tr class="d-flex">
-                    <th class="col-8"><a href='{% url 'meal_detail' rec.meal_id %}'> {{ rec.meal.name }}  </a></th>
-                    <th class="col-2">przewidywana ocena: {{ rec.predicted_mark|floatformat }}</th>
+                    <th class="col-8"><a href='{% url 'meal_detail' rec.meal_id %}'> {{ rec.meal }}  </a></th>
+                    <th class="col-2">przewidywana ocena: {{ rec.predicted_mark|floatformat}}</th>
 
                 </tr>
                 </thead>
@@ -83,5 +83,6 @@
             {% endfor %}
             </table>
         </div>
+    </div>
     </div>
 {% endblock content %}
