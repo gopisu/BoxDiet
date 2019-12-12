@@ -65,22 +65,31 @@ class Rank(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="meals_user")
     mark = models.FloatField()
 
+    def save(self):
+        meal_id = self.meal_id
+        meal = Meal.objects.get(meal_id=meal_id)
+        meal.average_rank = meal.avg_of_given_ranks() + float(meal_id)
+        meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
+        meal.save()
+        r = super(Rank, self).save()
+        return r
+
     class Meta:
         ordering = ["user_id"]
 
-
-class RankManager(models.Manager):
-    def create(self, *args, **kwargs):
-        if kwargs['meal_id']:
-            try:
-                meal_id = int(kwargs['meal_id'])
-                meal = Meal.objects.get(meal_id=meal_id)
-                meal.average_rank = meal.avg_of_given_ranks() + float(meal_id)
-                meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
-                meal.save()
-                return super(RankManager, self).create(*args, **kwargs)
-            except ValueError:
-                return super(RankManager, self).create(*args, **kwargs)
+#
+# class RankManager(models.Manager):
+#     def create(self, *args, **kwargs):
+#         if kwargs['meal_id']:
+#             try:
+#                 meal_id = int(kwargs['meal_id'])
+#                 meal = Meal.objects.get(meal_id=meal_id)
+#                 meal.average_rank = meal.avg_of_given_ranks() + float(meal_id)
+#                 meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
+#                 meal.save()
+#                 return super(RankManager, self).create(*args, **kwargs)
+#             except ValueError:
+#                 return super(RankManager, self).create(*args, **kwargs)
 
 
 class Recommended(models.Model):
