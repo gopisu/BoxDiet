@@ -13,10 +13,11 @@ class DashboardView(View):
     def get(self, request):
         meal_no = count(Meal)
         users_no = count(User)
-        top10meals = Meal.objects.filter(average_rank__gt=4.5).order_by('-no_of_ranks')[:10]
-
+        top10meals = Meal.objects.filter(average_rank__gt=4.6).order_by('-no_of_ranks')[:10]
+        worst10meals = Meal.objects.filter(average_rank__lte=2.9).order_by('-no_of_ranks')[:10]
         return render(request, 'BoxDiet/dashboard.html', {'meal_no': meal_no,
-                                                          'users_no': users_no, 'top10meals': top10meals})
+                                                          'users_no': users_no, 'top10meals': top10meals,
+                                                          'worst10meals': worst10meals})
 
 
 class UsersView(View):
@@ -90,9 +91,11 @@ class UserCreateView(CreateView):
 
 class RankCreateView(View):
     def get(self, request):
+        selected_meal = 1513
         users = User.objects.all()
         meals = Meal.objects.all()
-        return render(request, "BoxDiet/rank_form.html", {'users': users, 'meals': meals})
+        return render(request, "BoxDiet/rank_form.html",
+                      {'users': users, 'meals': meals})
 
     def post(self, request):
         user_id = request.POST.get('user')
@@ -107,24 +110,6 @@ class RankCreateView(View):
 
 class MealDetailsView(DetailView):
     model = Meal
-
-
-class PopulateWithAverage(View):
-    def get(self, request):
-        meals = Meal.objects.all()
-        for meal in meals:
-            meal.average_rank = meal.avg_of_given_ranks()
-            meal.save()
-        return HttpResponse('dodano średnie')
-
-
-class PopulateWithRanksNo(View):
-    def get(self, request):
-        meals = Meal.objects.all()
-        for meal in meals:
-            meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
-            meal.save()
-        return HttpResponse('dodano liczbe ocen')
 
 
 class RecommendedList(View):
