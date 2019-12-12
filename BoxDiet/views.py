@@ -1,12 +1,12 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 from django.views import View
 from django.views import generic
-import turicreate as tc
+
+
 
 from BoxDiet.models import Meal, User, Rank, Recommended
 from BoxDiet.utils import count, sliced_paginator
@@ -94,6 +94,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
 class RankCreateView(LoginRequiredMixin, View):
     def get(self, request):
+        User.objects.create(**json)
         users = User.objects.all()
         meals = Meal.objects.all()
         return render(request, "BoxDiet/rank_form.html",
