@@ -22,13 +22,13 @@
     <header class="page-header">
         <nav class="navbar navbar-expand-lg justify-content-between">
             <a href="/" class="navbar-brand main-logo main-logo-smaller">
-                Box <span>Diet</span>
+               Recommend  <span>MEal</span>
             </a>
          <div class="d-flex justify-content-around">
              <h4 class="text-light mr-3 mt-1">{{ user.username }}</h4>
              <div class="circle-div text-center mr-1"><i class="fas fa-user icon-user"></i></div>
              {% if user.is_authenticated %}
-             <a class="btn btn-color p-1 ml-3" href="">Wyloguj się</a>
+             <a class="btn btn-color p-1 ml-3" href="{% url 'logout' %}">Wyloguj się</a>
              {% endif %}
          </div>
 
@@ -97,5 +97,6 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+{% load static %}
 </body>
 </html>

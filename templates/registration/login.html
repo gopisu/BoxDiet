@@ -1,0 +1,21 @@
+{% extends "BoxDiet/__base__.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+
+    <div class="schedules-content border-dashed p-5 m-8">
+        <form  method="POST"> {% csrf_token %}
+            <!-- templates/registration/login.html -->
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Zaloguj</button>
+            </form>
+            <br>lub <a href="{% url 'signup' %}" class="btn btn-warning">Załóż konto</a>
+            ​<input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </div>
+
+{% endblock content %}

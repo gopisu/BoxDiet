@@ -1,0 +1,18 @@
+{% extends "BoxDiet/__base__.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+
+    <div class="container3">
+        <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Zarejestruj</button>
+
+            </form>
+        </form>
+    </div>
+
+
+{% endblock content %}
