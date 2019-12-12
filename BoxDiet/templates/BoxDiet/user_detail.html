@@ -9,11 +9,9 @@
             </div>
 
             <div class="d-flex justify-content-end mb-2 pl-1">
-                <a href="{% url 'dashboard' %}" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj ocenę</a>
+                <a href="{% url 'rank_create' %}" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj ocenę</a>
             </div>
-            <div class="d-flex justify-content-end mb-2 pl-1">
-                <a href="{% url 'dashboard' %}" class="btn btn-warning rounded-0 pt-0 pb-0 pr-4 pl-4">Usuń ocenę</a>
-            </div>
+
             <div class="d-flex justify-content-end mb-2 pl-1">
                 <a href="{% url 'user_list' %}" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Powrót</a>
             </div>
@@ -60,7 +58,7 @@
                 <table class="table">
                 <thead>
                 <tr class="d-flex">
-                    <th class="col-8">{{ rank.meal }}</th>
+                    <th class="col-8"><a href="{% url 'meal_detail' rank.meal_id %}">{{ rank.meal }}</a></th>
                     <th class="col-2">realna ocena: {{ rank.mark }}</th>
                     <th class="col-2"></th>
                 </tr>
@@ -76,7 +74,7 @@
                 <table class="table">
                 <thead>
                 <tr class="d-flex">
-                    <th class="col-8"> {{ rec.meal.name }}  </th>
+                    <th class="col-8"><a href='{% url 'meal_detail' rec.meal_id %}'> {{ rec.meal.name }}  </a></th>
                     <th class="col-2">przewidywana ocena: {{ rec.predicted_mark|floatformat }}</th>
 
                 </tr>
