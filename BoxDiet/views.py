@@ -81,7 +81,7 @@ class UserDetailsView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailsView, self).get_context_data(**kwargs)
-        recs = Recommended.objects.filter(user__id=self.kwargs['pk']).order_by('-predicted_mark')
+        recs = Recommended.objects.filter(user__id=self.kwargs['pk']).order_by('meal_id')
         context['recs'] = recs
         return context
 
@@ -94,7 +94,6 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
 class RankCreateView(LoginRequiredMixin, View):
     def get(self, request):
-        User.objects.create(**json)
         users = User.objects.all()
         meals = Meal.objects.all()
         return render(request, "BoxDiet/rank_form.html",
@@ -105,12 +104,14 @@ class RankCreateView(LoginRequiredMixin, View):
         meal_id = request.POST.get('meal')
         mark = request.POST.get('mark')
         form = 'BoxDiet/rank_form.html'
+        users = User.objects.all()
+        meals = Meal.objects.all()
         try:
             rank = Rank.objects.create(user_id=user_id, meal_id=meal_id, mark=mark)
         except:
             message = "Podaj poprawne dane!"
-            return render(request, form, {'message': message})
-        return render(request, form, {'message': f'Dodano ocenę {rank.mark} dla dania {rank.meal}'})
+            return render(request, form, {'message': message, 'users': users, 'meals': meals})
+        return render(request, form, {'users': users, 'meals': meals, 'message': f'Dodano ocenę {rank.mark} dla dania {rank.meal}'})
 
 
 class MealDetailsView(LoginRequiredMixin, DetailView):

@@ -14,4 +14,4 @@ class Command(BaseCommand):
         for user in users:
             recs = give_reccomendations(user.id, model2, items)
             for rec in recs:
-                Recommended.objects.create(user=user, meal_id=rec['meal__id'], predicted_mark=rec['score'])
+                Recommended.objects.create(user=user, meal_id=rec['meal_id'], predicted_mark=rec['score'])
