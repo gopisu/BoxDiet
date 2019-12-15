@@ -6,7 +6,7 @@
             <div class="menu-item border-dashed">
                 <a href="{% url 'user_create' %}">
                     <i class="far fa-plus-square icon-plus-square"></i>
-                    <span class="title">dodaj użytkownika</span>
+                    <span class="title">dodaj Klienta</span>
                 </a>
             </div>
 
@@ -21,11 +21,15 @@
         <div class="dashboard-alerts">
             <div class="alert-item alert-info">
                 <i class="fas icon-circle fa-info-circle"></i>
-                <span class="font-weight-bold"><a href="{% url 'meal_list' %}" style="text-decoration:none"> Liczba posiłków: {{ meal_no }}</a></span>
+                <span class="font-weight-bold"><a href="{% url 'meal_list' %}" style="text-decoration:none"> Liczba posiłków: {{ meals_no }}</a></span>
             </div>
             <div class="alert-item alert-light">
                 <i class="far icon-calendar fa-calendar-alt"></i>
-                <span class="font-weight-bold"><a href="{% url 'user_list' %}" style="text-decoration:none">Liczba użytkownków: {{ users_no }}</a></span>
+                <span class="font-weight-bold"><a href="{% url 'user_list' %}" style="text-decoration:none">Liczba Klientów: {{ users_no }}</a></span>
+            </div>
+                        <div class="alert-item alert-light">
+                <i class="far icon-calendar fa-calendar-alt"></i>
+                <span class="font-weight-bold"><a href="" style="text-decoration:none">Liczba ocen: {{ ranks_no }}</a></span>
             </div>
         </div>
     </div>

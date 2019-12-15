@@ -20,11 +20,12 @@ def prepare_rec():
     items = items.dropna(how='any')
     users = users.dropna(how='any')
 
-    # splitting data
+    # splitting data is not necessary here
     # training_data, validation_data = tc.recommender.util.random_split_by_user(actions, 'user_id', 'meal_id')
+    # model training
     model2 = tc.recommender.ranking_factorization_recommender.create(actions, user_id='user_id', item_id='meal_id',
                                                                      target='mark')
-    # model training
+
 
     return model2, items
 

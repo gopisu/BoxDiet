@@ -14,11 +14,12 @@ from BoxDiet.utils import count, sliced_paginator
 
 class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
-        meal_no = count(Meal)
+        meals_no = count(Meal)
         users_no = count(User)
+        ranks_no = count(Rank)
         top10meals = Meal.objects.filter(average_rank__gt=4.6).order_by('-no_of_ranks')[:10]
         worst10meals = Meal.objects.filter(average_rank__lte=2.9).order_by('-no_of_ranks')[:10]
-        return render(request, 'BoxDiet/dashboard.html', {'meal_no': meal_no,
+        return render(request, 'BoxDiet/dashboard.html', {'meals_no': meals_no, 'ranks_no': ranks_no,
                                                           'users_no': users_no, 'top10meals': top10meals,
                                                           'worst10meals': worst10meals})
 

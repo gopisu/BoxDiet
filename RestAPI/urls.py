@@ -20,7 +20,6 @@ from django.urls import path
 from RestAPI.views import RecommendedList, RecommendedList1
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name='APIadmin'),
     path('get-recommended-for/<int:user_id>/', RecommendedList.as_view()),
     path('get-recommended-for/', RecommendedList1.as_view()),
 ]
