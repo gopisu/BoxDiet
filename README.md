@@ -5,10 +5,10 @@
 Description
 ------------
 
-It is a website made for BoxDiet company to predict rankings of meals and present real ranking and predictions.
+It is a website made as final project on python/django bootcamp. 
 
-Company "X" is delivering every day 5 meals to a Client who can later rate their meal. They might improve Client 
-satisfacion using recommendation engine to decide on his tomorrow's meal set.
+Case study: 
+Company "X" is a BoxDiet company. What they do is that they deliver every day 5 meals to a Client who can later rate their meal. They might improve Client satisfacion by using recommendation engine to decide on his tomorrow's meal set.
 
 Features
 ------------
@@ -28,4 +28,4 @@ Additionaly you can find there:
 
 Keywords
 -------------
-django, python, machine-learing, recommender system
+django, python, machine-learing, recommender system, Rest API
