@@ -8,7 +8,7 @@ Description
 It is a website made as final project on python/django bootcamp. 
 
 Case study: 
-Company "X" is a BoxDiet company. What they do is that they deliver every day 5 meals to a Client who can later rate their meal. They might improve Client satisfacion by using recommendation engine to decide on his tomorrow's meal set.
+Company "X" is a BoxDiet company. They deliver every day 5 meals to a Client who can later rate their meal. They might improve Client satisfacion by using recommendation engine to decide on his tomorrow's meal set.
 
 Features
 ------------
