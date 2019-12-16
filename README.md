@@ -1,5 +1,5 @@
 
-# ReccomendMEal is django-based application 
+# BoxDiet/ReccomendMEal is django-based application 
 
 
 Description
