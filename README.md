@@ -1,6 +1,6 @@
 
 # ReccomendMEal is django-based application 
-######################################################################
+
 
 Description
 ------------
