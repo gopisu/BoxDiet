@@ -6,8 +6,6 @@ from django.views.generic import DetailView, CreateView
 from django.views import View
 from django.views import generic
 
-
-
 from BoxDiet.models import Meal, User, Rank, Recommended
 from BoxDiet.utils import count, sliced_paginator
 
@@ -107,17 +105,22 @@ class RankCreateView(LoginRequiredMixin, View):
         form = 'BoxDiet/rank_form.html'
         users = User.objects.all()
         meals = Meal.objects.all()
+
         try:
-            rank = Rank.objects.create(user_id=user_id, meal_id=meal_id, mark=mark)
+            if int(mark) in range(1, 6):
+                rank = Rank.objects.create(user_id=user_id, meal_id=meal_id, mark=mark)
+            else:
+                message = "Nie zapisano do bazy. Wybierz ocenę od 1 do 5."
+                return render(request, form, {'message': message, 'users': users, 'meals': meals})
         except:
             message = "Podaj poprawne dane!"
             return render(request, form, {'message': message, 'users': users, 'meals': meals})
-        return render(request, form, {'users': users, 'meals': meals, 'message': f'Dodano ocenę {rank.mark} dla dania {rank.meal}'})
+        return render(request, form,
+                      {'users': users, 'meals': meals, 'message': f'Dodano ocenę {rank.mark} dla dania {rank.meal}'})
 
 
 class MealDetailsView(LoginRequiredMixin, DetailView):
     model = Meal
-
 
 
 class SignUp(generic.CreateView):
