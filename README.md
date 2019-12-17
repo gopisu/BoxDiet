@@ -28,4 +28,4 @@ Additionaly you can find there:
 Keywords
 -------------
 django, python, Rest API, postgreSQL
-machine-learing, recommender system, turicreate apple, collaborative filtering/matrix factorisation
+machine-learing, recommender system, turicreate apple, collaborative filtering/matrix factorization model
