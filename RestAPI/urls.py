@@ -17,9 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from RestAPI.views import RecommendedList, RecommendedList1
+from RestAPI.views import RecommendedList, Prediction
 
 urlpatterns = [
     path('get-recommended-for/<int:user_id>/', RecommendedList.as_view()),
-    path('get-recommended-for/', RecommendedList1.as_view()),
+    path('get-predictions-for/<int:meal_id>/<int:user_id>/', Prediction.as_view()),
 ]

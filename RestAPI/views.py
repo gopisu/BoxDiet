@@ -12,7 +12,7 @@ class RecommendedList(View):
         serializer = RecommendedSerializer(recommended, many=True)
         return JsonResponse(serializer.data, safe=False)
 
-class RecommendedList1(View):
+class Prediction(View):
     def get(self, request):
         recommended = Recommended.objects.filter(user__id='15343')
         serializer = RecommendedSerializer(recommended, many=True)
