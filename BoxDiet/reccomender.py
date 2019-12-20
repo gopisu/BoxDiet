@@ -12,13 +12,12 @@ def prepare_rec():
                   host='localhost',
                   database='BoxDiet1')
 
-    users = tc.SFrame.from_sql(cnx, 'SELECT * FROM "BoxDiet_user"')
-    actions = tc.SFrame.from_sql(cnx, 'SELECT * FROM "BoxDiet_rank"')
+    actions = tc.SFrame.from_sql(cnx, 'SELECT meal_id, user_id, mark FROM "BoxDiet_rank"')
     items = tc.SFrame.from_sql(cnx, 'SELECT * FROM "BoxDiet_meal"')
     cnx.close()
     # dealing with missing data
     items = items.dropna(how='any')
-    users = users.dropna(how='any')
+
 
     # splitting data is not necessary here
     # training_data, validation_data = tc.recommender.util.random_split_by_user(actions, 'user_id', 'meal_id')
@@ -39,3 +38,9 @@ def give_reccomendations(user_id, model2, items):
         recommendations_list.append(i)
 
     return recommendations_list
+
+
+def predict(user_id, meal_id):
+    my_model = tc.load_model('my_model_file')
+    prediction = my_model.predict(dataset={'user_id': 5, 'meal_id': 2})
+    return prediction

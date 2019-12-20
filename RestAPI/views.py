@@ -1,9 +1,11 @@
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.views import View
 
 from BoxDiet.models import Recommended
+from BoxDiet.reccomender import predict
 from RestAPI.serializers import RecommendedSerializer
+
+
 # Create your views here.
 
 class RecommendedList(View):
@@ -13,7 +15,6 @@ class RecommendedList(View):
         return JsonResponse(serializer.data, safe=False)
 
 class Prediction(View):
-    def get(self, request):
-        recommended = Recommended.objects.filter(user__id='15343')
-        serializer = RecommendedSerializer(recommended, many=True)
-        return JsonResponse(serializer.data, safe=False)
+    def get(self, request, user_id, meal_id):
+        predicted = predict(user_id, meal_id)
+        return JsonResponse(predicted, safe=False)
