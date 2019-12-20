@@ -14,7 +14,10 @@ class RecommendedList(View):
         serializer = RecommendedSerializer(recommended, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+
 class Prediction(View):
     def get(self, request, user_id, meal_id):
+        user_id = int(user_id)
+        meal_id = int(meal_id)
         predicted = predict(user_id, meal_id)
         return JsonResponse(predicted, safe=False)
