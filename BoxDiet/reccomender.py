@@ -42,5 +42,10 @@ def give_reccomendations(user_id, model2, items):
 
 def predict(user_id, meal_id):
     my_model = tc.load_model('my_model_file')
-    prediction = my_model.predict(dataset={'user_id': 5, 'meal_id': 2})
-    return prediction
+    prediction = my_model.predict(dataset={'id': user_id, 'meal__id': meal_id})
+    dict = {}
+    for item in prediction:
+        dict["prediction"] = item
+    dict["user_id"] = str(user_id)
+    dict["meal_id"] = str(meal_id)
+    return dict
