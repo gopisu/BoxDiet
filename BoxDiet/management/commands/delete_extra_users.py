@@ -1,15 +1,15 @@
+from django.core.management.base import BaseCommand
 
-from django.core.management.base import BaseCommand, CommandError
-from BoxDiet.models import Recommended, User
+from BoxDiet.models import User
 
 
 class Command(BaseCommand):
-    help = 'delete users with no ranking'
+    help = "delete users with no ranking"
 
     def handle(self, *args, **options):
 
         users = User.objects.all()
         for user in users:
-            if user.no_of_given_ranks()['mark__count'] == 0:
+            if user.no_of_given_ranks()["mark__count"] == 0:
                 instance = User.objects.get(id=user.id)
                 instance.delete()

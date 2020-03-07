@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('BoxDiet', '0009_auto_20191211_2139'),
+        ("BoxDiet", "0009_auto_20191211_2139"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='sex',
-            field=models.CharField(choices=[('w', 'Kobieta '), ('m', 'Mężczyzna'), ('\\N', 'Brak danych')], max_length=2, verbose_name='Płeć'),
+            model_name="user",
+            name="sex",
+            field=models.CharField(
+                choices=[("w", "Kobieta "), ("m", "Mężczyzna"), ("\\N", "Brak danych")],
+                max_length=2,
+                verbose_name="Płeć",
+            ),
         ),
     ]

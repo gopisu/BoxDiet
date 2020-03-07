@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('BoxDiet', '0007_meal_no_of_ranks'),
+        ("BoxDiet", "0007_meal_no_of_ranks"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='id',
+            model_name="user",
+            name="id",
             field=models.AutoField(primary_key=True, serialize=False),
         ),
     ]

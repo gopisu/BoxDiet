@@ -6,23 +6,23 @@ from django.db.models import Avg, Count
 
 class User(models.Model):
     SEX = (
-        ('w', 'Kobieta '),
-        ('m', 'Mężczyzna'),
-        ('\\N', "Brak danych"),
+        ("w", "Kobieta "),
+        ("m", "Mężczyzna"),
+        ("\\N", "Brak danych"),
     )
     id = models.AutoField(primary_key=True)
     sex = models.CharField(max_length=2, choices=SEX, verbose_name="Płeć")
 
     def avg_of_given_ranks(self):
         # returns None if no rank is related to this instance
-        temp = self.meals_user.aggregate(Avg('mark'))
-        if temp['mark__avg'] is None:
+        temp = self.meals_user.aggregate(Avg("mark"))
+        if temp["mark__avg"] is None:
             return 0.0
-        return float(temp['mark__avg'])
+        return float(temp["mark__avg"])
 
     def no_of_given_ranks(self):
         # returns None if no rank is related to this instance
-        return self.meals_user.aggregate(Count('mark'))
+        return self.meals_user.aggregate(Count("mark"))
 
     class Meta:
         ordering = ["id"]
@@ -50,14 +50,14 @@ class Meal(models.Model):
         return self.name
 
     def avg_of_given_ranks(self):
-        temp = self.meals_user.aggregate(Avg('mark'))
-        if temp['mark__avg'] is None:
+        temp = self.meals_user.aggregate(Avg("mark"))
+        if temp["mark__avg"] is None:
             return 0.0
-        return float(temp['mark__avg'])
+        return float(temp["mark__avg"])
 
     def no_of_given_ranks(self):
         # returns None if no rank is related to this instance
-        return self.meals_user.aggregate(Count('mark'))
+        return self.meals_user.aggregate(Count("mark"))
 
 
 class Rank(models.Model):
@@ -70,7 +70,7 @@ class Rank(models.Model):
             meal_id = self.meal_id
             meal = Meal.objects.get(meal_id=meal_id)
             meal.average_rank = meal.avg_of_given_ranks()
-            meal.no_of_ranks = meal.no_of_given_ranks()['mark__count']
+            meal.no_of_ranks = meal.no_of_given_ranks()["mark__count"]
             meal.save()
             r = super(Rank, self).save()
         except Meal.DoesNotExist:
@@ -79,6 +79,7 @@ class Rank(models.Model):
 
     class Meta:
         ordering = ["user_id"]
+
 
 class Recommended(models.Model):
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name="recommended")
