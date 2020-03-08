@@ -6,7 +6,7 @@ from BoxDiet.models import User
 
 
 class WhateverTest(TestCase):
-    def test_whatever_creation(self):
+    def test_user_creation(self):
         w = User.objects.create(id=5, sex="w")
         self.assertTrue(isinstance(w, User))
         self.assertEqual("w", w.sex)
