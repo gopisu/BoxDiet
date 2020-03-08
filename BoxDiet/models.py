@@ -34,12 +34,12 @@ class Meal(models.Model):
     name = models.CharField(max_length=246)
     average_rank = models.FloatField(null=True, default=None)
     no_of_ranks = models.IntegerField(null=True, default=0)
-    calories_summary = models.FloatField()
-    price_summary = models.FloatField()
-    fat_summary = models.FloatField()
-    protein_summary = models.FloatField()
-    carbohydrates_summary = models.FloatField()
-    cellulose_summary = models.FloatField()
+    calories_summary = models.FloatField(null=True)
+    price_summary = models.FloatField(null=True)
+    fat_summary = models.FloatField(null=True)
+    protein_summary = models.FloatField(null=True)
+    carbohydrates_summary = models.FloatField(null=True)
+    cellulose_summary = models.FloatField(null=True)
 
     class Meta:
         ordering = ["-average_rank"]

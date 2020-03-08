@@ -2,20 +2,17 @@ from django.contrib.auth.models import User as Auth_user
 from django.test import TestCase
 from django.urls import reverse
 
+from BoxDiet import factories
 from BoxDiet.models import User
 
 
 class ViewsTest(TestCase):
     def setUp(self):
-        test_user1 = Auth_user.objects.create_user(
+        self.test_user1 = Auth_user.objects.create_user(
             username="testuser1", password="1X<ISRUkw+tuK"
         )
-        test_user2 = Auth_user.objects.create_user(
-            username="testuser2", password="2HJ1vRV0Z&3iD"
-        )
-
-        test_user1.save()
-        test_user2.save()
+        self.test_user1.save()
+        self.meal_1 = factories.MealFactory()
 
     def test_user_creation(self):
         w = User.objects.create(id=5, sex="w")
@@ -40,32 +37,16 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse("dashboard"))
         self.assertEqual(response.status_code, 200)
 
-    #
-    # def test_logged_in_with_permission_borrowed_book(self):
-    #     login = self.client.login(username='testuser2', password='2HJ1vRV0Z&3iD')
-    #     response = self.client.get(reverse('renew-book-librarian', kwargs={'pk': self.test_bookinstance2.pk}))
-    #
-    #     # Check that it lets us login - this is our book and we have the right permissions.
-    #     self.assertEqual(response.status_code, 200)
-    #
-    # def test_logged_in_with_permission_another_users_borrowed_book(self):
-    #     login = self.client.login(username='testuser2', password='2HJ1vRV0Z&3iD')
-    #     response = self.client.get(reverse('renew-book-librarian', kwargs={'pk': self.test_bookinstance1.pk}))
-    #
-    #     # Check that it lets us login. We're a librarian, so we can view any users book
-    #     self.assertEqual(response.status_code, 200)
-    #
-    # def test_HTTP404_for_invalid_book_if_logged_in(self):
-    #     # unlikely UID to match our bookinstance!
-    #     test_uid = uuid.uuid4()
-    #     login = self.client.login(username='testuser2', password='2HJ1vRV0Z&3iD')
-    #     response = self.client.get(reverse('renew-book-librarian', kwargs={'pk': test_uid}))
-    #     self.assertEqual(response.status_code, 404)
-    #
-    # def test_uses_correct_template(self):
-    #     login = self.client.login(username='testuser2', password='2HJ1vRV0Z&3iD')
-    #     response = self.client.get(reverse('renew-book-librarian', kwargs={'pk': self.test_bookinstance1.pk}))
-    #     self.assertEqual(response.status_code, 200)
-    #
-    #     # Check we used correct template
-    #     self.assertTemplateUsed(response, 'catalog/book_renew_librarian.html')
+    def test_meal_detail_HTTP404_invalid_meal_if_logged_in(self):
+        self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
+        response = self.client.get(reverse("meal_detail", kwargs={"pk": 20}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_usersview_uses_correct_template(self):
+        user = self.test_user1
+        self.client.force_login(user)
+        response = self.client.get(
+            reverse("meal_detail", kwargs={"pk": self.meal_1.meal_id})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "catalog/book_renew_librarian.html")
