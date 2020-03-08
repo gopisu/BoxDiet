@@ -17,9 +17,7 @@ def sliced_paginator(request, object_list):
     return page_range, object_list
 
 
-def validate_int(variable):
-    try:
-        var2 = int(variable)
-    except ValueError:
+def validate_one_int(unknown_type):
+    if type(unknown_type) != int:
         return False
-    return var2
+    return True

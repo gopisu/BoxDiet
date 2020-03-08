@@ -14,14 +14,12 @@ class User(models.Model):
     sex = models.CharField(max_length=2, choices=SEX, verbose_name="Płeć")
 
     def avg_of_given_ranks(self):
-        # returns None if no rank is related to this instance
         temp = self.meals_user.aggregate(Avg("mark"))
         if temp["mark__avg"] is None:
             return 0.0
         return float(temp["mark__avg"])
 
     def no_of_given_ranks(self):
-        # returns None if no rank is related to this instance
         return self.meals_user.aggregate(Count("mark"))
 
     class Meta:
